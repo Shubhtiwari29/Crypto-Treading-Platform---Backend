@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  crypto-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=treading
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - stripe.api.key=your-stripe-api-key
+      - razorpay.api.key=your-razorpay-api-key
+      - razorpay.api.secret=your-razorpay-secret
+    ports:
+      - "5454:5454"
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: treading
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
